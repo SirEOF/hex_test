@@ -68,7 +68,8 @@ def play_loop(difficulty):
             score -= correctness[0]
             correctness = correctness[1:]
 
-        if (score > weight * 0.8) and (len(current_set) < len(possibilities)):
+        if ((score > weight * 0.8)
+           and (len(current_set) < len(possibilities) - 1)):
             current_pointer += 1
             current_set.append(possibilities[current_pointer])
             score = 0

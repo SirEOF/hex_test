@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import quizzer
 
-import random
 import sys
 
 DOMAINS = [
@@ -13,15 +12,13 @@ DOMAINS = [
 
 
 def help_and_exit():
-    print "./%s DIFFICULTY [TIMEOUT]" % (sys.argv[0])
+    print "./%s DIFFICULTY" % (sys.argv[0])
     print "This game tests your conversions of decimal to hex and back"
     print "Difficulties include quizzing on the following sets:"
     print "\t0 => range(16)"
     print "\t1 => range(16) + [(i+1) * 10 for i in range(25)] + [256]"
     print "\t2 => range(256)"
     print "\t3 => range(65536)"
-    print "Timeout corresponds to how much time you get per question."
-    print "This is optional, and by default you are given infinite time."
     sys.exit(1)
 
 def play(difficulty):

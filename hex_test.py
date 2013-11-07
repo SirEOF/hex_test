@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import quizzer
+
 import random
 import sys
 
@@ -22,64 +24,21 @@ def help_and_exit():
     print "This is optional, and by default you are given infinite time."
     sys.exit(1)
 
-def play_loop(difficulty):
+def play(difficulty):
     domain = DOMAINS[difficulty]
-    correctness_table = {}
+    translations = []
     for decimal_value in domain:
         str_value = str(decimal_value).strip()
         hex_value = hex(decimal_value).strip()
-        correctness_table[hex_value] = str_value
-        correctness_table[str_value] = hex_value
+        translations.append((str_value, hex_value))
 
-    possibilities = correctness_table.keys()
-
-    # Start the game out with only three possibilities
-    random.shuffle(possibilities)
-    current_pointer = 3
-    current_set = possibilities[0:current_pointer]
-
-    # TODO: Implement timeout
-    # TODO: Some sort of weighted random
-    # print correctness_table
-    score = 0
-    weight = 5
-    correctness = []
-    force_option = None
-    while True:
-        # print current_set
-        if force_option:
-            quiz = force_option
-            force_option = None
-        else:
-            quiz = random.choice(current_set)
-
-        sys.stdout.write("Convert %s=" % quiz)
-        answer = raw_input().strip()
-        if correctness_table[quiz] == answer:
-            print "Correct!"
-            correctness.append(True)
-        else:
-            print "Wrong. Answer=%s" % correctness_table[quiz]
-            correctness.append(False)
-        print ""
-
-        score += correctness[-1]
-        if len(correctness) > weight:
-            score -= correctness[0]
-            correctness = correctness[1:]
-
-        if ((score > weight * 0.8)
-           and (len(current_set) < len(possibilities) - 1)):
-            current_pointer += 1
-            current_set.append(possibilities[current_pointer])
-            score = 0
-            correctness = []
+    quizzer.play_loop(translations)
 
 def main():
     if len(sys.argv) != 2:
         help_and_exit()
     difficulty = int(sys.argv[1])
-    play_loop(difficulty)
+    play(difficulty)
 
 if __name__ == "__main__":
     main()
